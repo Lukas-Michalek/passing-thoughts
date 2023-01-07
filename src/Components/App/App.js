@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { AddThoughtForm } from '../../Components/AddThoughtForm/AddThoughtForm';
 import { Thought } from '../../Components/Thought/Thought';
 import { generateId, getNewExpirationTime } from '../../util/utilities';
+import './App.css'
 
 export function App() {
   const [thoughts, setThoughts] = useState([
@@ -18,16 +19,38 @@ export function App() {
     },
   ]);
 
+
+  const addThought = (thought) => {
+    setThoughts((prev) => [thought, ...prev]);
+  }
+
+  const removeThought = (thoughtIdToRemove) => {
+    setThoughts((prevThoughts) => (prevThoughts.filter(
+      thought => {
+        return thought.id !== thoughtIdToRemove
+      }
+    )))
+    
+  }
+
+
+
   return (
     <div className="App">
+      
       <header>
         <h1>Passing Thoughts</h1>
       </header>
       <main>
-        <AddThoughtForm />
+        <AddThoughtForm 
+          addThought = {addThought}
+        />
         <ul className="thoughts">
           {thoughts.map((thought) => (
-            <Thought key={thought.id} thought={thought} />
+            <Thought 
+              key={thought.id} 
+              thought={thought}
+              removeThought={removeThought} />
           ))}
         </ul>
       </main>
